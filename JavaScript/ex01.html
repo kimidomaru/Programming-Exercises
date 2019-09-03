@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Ex.1</title>
+    <style>
+        body{
+            background-color: rgb(144, 209, 206);
+            color: white;
+            font: normal 20pt Arial;
+        }
+        h1{
+            color: rgb(166, 226, 69);
+        }
+    </style>
+</head>
+<body>
+    <h1>Exercicio 1</h1>
+    <p>Testando isso aqui tio</p>
+    <script>
+        /*window.alert('Mama nois');
+        window.confirm('Tá sussa?');
+        window.prompt('Qual seu nome');*/
+        let targetNumber = 8;
+        let userGuess = 5;
+        let computerGuess = 6;
+        let result1 = Math.abs(targetNumber-userGuess);
+        let result2 = Math.abs(targetNumber-computerGuess);
+        if(result1 <= result2)
+            window.alert('Player Wins');
+        else
+            window.alert('Computer Wins');
+    </script>
+</body>
+</html>
