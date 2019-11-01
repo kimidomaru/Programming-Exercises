@@ -6,21 +6,24 @@ import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.CoreMatchers.not;
 import static org.junit.Assert.assertThat;
-import static org.junit.Assert.assertTrue;
 
 import java.util.Date;
 
-import org.junit.Assert;
+import org.junit.Rule;
 import org.junit.Test;
+import org.junit.rules.ErrorCollector;
 
 import br.ce.luiks.entidades.Filme;
 import br.ce.luiks.entidades.Locacao;
 import br.ce.luiks.entidades.Usuario;
-import br.ce.luiks.utils.DataUtils;
 
 public class LocacaoServiceTest {
+	@Rule
+	public ErrorCollector error = new ErrorCollector();
+	
 	@Test
 	public void teste() {
+		
 		//cenario
 		Filme joker = new Filme("Joker", 10, 25.50);
 		Usuario user = new Usuario("Joao");
@@ -39,10 +42,17 @@ public class LocacaoServiceTest {
 		System.out.println();*/
 		
 		//TESTES
-		assertThat(loc.getValor(), is(equalTo(5.0)));
+		
+		error.checkThat(loc.getValor(), is(equalTo(25.2)));
+		error.checkThat(isMesmaData(loc.getDataLocacao(), new Date()), is(true));
+		error.checkThat(isMesmaData(loc.getDataRetorno(), obterDataComDiferencaDias(1)), is(false));
+		
+		/*
+		assertThat(loc.getValor(), is(equalTo(25.5)));
 		assertThat(loc.getValor(), is(not(7.0)));
 		assertThat(isMesmaData(loc.getDataLocacao(), new Date()), is(true));
 		assertThat(isMesmaData(loc.getDataRetorno(), obterDataComDiferencaDias(1)), is(true));
+		*/
 		
 		/*
 		Assert.assertEquals(25.50, loc.getValor(), 0.01);
