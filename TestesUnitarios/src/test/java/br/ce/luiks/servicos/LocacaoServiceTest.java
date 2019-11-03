@@ -4,14 +4,14 @@ import static br.ce.luiks.utils.DataUtils.isMesmaData;
 import static br.ce.luiks.utils.DataUtils.obterDataComDiferencaDias;
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.CoreMatchers.is;
-import static org.hamcrest.CoreMatchers.not;
-import static org.junit.Assert.assertThat;
 
 import java.util.Date;
 
+import org.junit.Assert;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ErrorCollector;
+import org.junit.rules.ExpectedException;
 
 import br.ce.luiks.entidades.Filme;
 import br.ce.luiks.entidades.Locacao;
@@ -21,8 +21,11 @@ public class LocacaoServiceTest {
 	@Rule
 	public ErrorCollector error = new ErrorCollector();
 	
+	@Rule
+	public ExpectedException excep = ExpectedException.none();
+	
 	@Test
-	public void teste() {
+	public void teste() throws Exception {
 		
 		//cenario
 		Filme joker = new Filme("Joker", 10, 25.50);
@@ -31,6 +34,14 @@ public class LocacaoServiceTest {
 		
 		//ação
 		Locacao loc = teste.alugarFilme(user, joker);
+			
+		//verificação
+			
+		//TESTES
+		error.checkThat(loc.getValor(), is(equalTo(25.5)));
+		error.checkThat(isMesmaData(loc.getDataLocacao(), new Date()), is(true));
+		error.checkThat(isMesmaData(loc.getDataRetorno(), obterDataComDiferencaDias(1)), is(true));
+		
 		
 		//verificação
 		/*System.out.println("Usuário: "+ loc.getUsuario().getNome() +
@@ -40,12 +51,6 @@ public class LocacaoServiceTest {
 				"\nData de devolução: " + loc.getDataRetorno() );
 		
 		System.out.println();*/
-		
-		//TESTES
-		
-		error.checkThat(loc.getValor(), is(equalTo(25.2)));
-		error.checkThat(isMesmaData(loc.getDataLocacao(), new Date()), is(true));
-		error.checkThat(isMesmaData(loc.getDataRetorno(), obterDataComDiferencaDias(1)), is(false));
 		
 		/*
 		assertThat(loc.getValor(), is(equalTo(25.5)));
@@ -64,5 +69,52 @@ public class LocacaoServiceTest {
 		System.out.println(DataUtils.isMesmaData(loc.getDataLocacao(), new Date()));
 		System.out.println(DataUtils.isMesmaData(loc.getDataRetorno(), DataUtils.obterDataComDiferencaDias(1)));
 		*/
+	}
+	
+	//Teste esperando excecao, forma elegante
+	@Test(expected = Exception.class)
+	public void testeLocacao_filmeSemEstoque() throws Exception {
+		//cenario
+		Filme joker = new Filme("Joker", 0, 25.50);
+		Usuario user = new Usuario("Joao");
+		LocacaoService teste = new LocacaoService();
+				
+		//ação
+		Locacao loc = teste.alugarFilme(user, joker);
+					
+	}
+	
+	//Teste esperando excecao, forma robusta
+	@Test
+	public void testeLocacao_filmeSemEstoque2() throws Exception {
+		//cenario
+		Filme joker = new Filme("Joker", 0, 25.50);
+		Usuario user = new Usuario("Joao");
+		LocacaoService teste = new LocacaoService();
+				
+		//ação
+		try {
+			teste.alugarFilme(user, joker);
+			Assert.fail("Deveria ter lançado uma exception");
+		} catch (Exception e) {
+			// TODO: handle exception
+			Assert.assertThat(e.getMessage(), is("Filme esgotado!"));
+		}
+		
+	}
+	
+	//Teste esperando excecao, forma nova
+	@Test
+	public void testeLocacao_filmeSemEstoque3() throws Exception {
+		//cenario
+		Filme joker = new Filme("Joker", 0, 25.50);
+		Usuario user = new Usuario("Joao");
+		LocacaoService teste = new LocacaoService();
+			
+		excep.expect(Exception.class);
+		excep.expectMessage("Filme esgotado!");
+		//ação
+		teste.alugarFilme(user, joker);
+		
 	}
 }
