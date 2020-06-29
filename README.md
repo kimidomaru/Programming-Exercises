@@ -1,4 +1,7 @@
-# Exercicios
-Exercícios de programação e afins.
+# Exercises
+Programming and related exercises/studies.
 
-Programming and related exercises.
+
+Exercícios/estudos de programação e afins.
+
+
