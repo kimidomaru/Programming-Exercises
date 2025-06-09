@@ -1,0 +1,6 @@
+26/05/2025 01:00:38 - https://httpbin.org/status/200 - Online: true
+26/05/2025 01:00:38 - https://httpbin.org/status/404 - Online: false
+26/05/2025 01:00:39 - https://www.google.com - Online: true
+26/05/2025 01:00:44 - https://httpbin.org/status/200 - Online: true
+26/05/2025 01:00:44 - https://httpbin.org/status/404 - Online: false
+26/05/2025 01:00:44 - https://www.google.com - Online: true
